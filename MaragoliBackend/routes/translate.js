@@ -11,7 +11,7 @@ async function tryLocalModel(text) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text, direction: 'maragoli_to_english' }),
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(60000),
     });
     if (!res.ok) return null;
     const data = await res.json();
