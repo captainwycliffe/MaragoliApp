@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "Maragoli Translate",
+    "slug": "maragoli-translate",
+    "version": "1.0.1",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#fbfbe2"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#fbfbe2"
+      },
+      "package": "com.yecliffe.maragolitranslate",
+      "versionCode": 2
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8278e299-933f-4279-94c5-5a41baae5152"
+      }
+    }
+  }
+}
