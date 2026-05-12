@@ -1,5 +1,5 @@
 const express = require('express');
-const { model } = require('../gemini');
+const { generate } = require('../anthropic');
 
 const LOCAL_MODEL_URL = process.env.LOCAL_MODEL_URL || 'http://localhost:5000';
 
@@ -76,10 +76,7 @@ Text to translate:
   }
 
   try {
-    const result = await model.generateContent(prompt);
-    const raw = result.response.text().trim();
-
-    // Strip markdown code fences if Gemini wraps the JSON
+    const raw = await generate(prompt);
     const jsonString = raw.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
     const parsed = JSON.parse(jsonString);
 
