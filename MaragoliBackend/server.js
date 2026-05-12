@@ -11,6 +11,9 @@ const phrasesRouter = require('./routes/phrases');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Render/proxy X-Forwarded-For headers for accurate rate limiting
+app.set('trust proxy', 1);
+
 // ── Middleware ──────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
