@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: maragoli-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: LOCAL_MODEL_URL
+        sync: false
+      - key: PORT
+        value: 3000
