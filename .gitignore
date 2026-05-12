@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Model weights (hosted on HF Hub: yecliffe/mbart-maragoli)
+MaragoliModel/models/
+
+# HF Space clone (not part of source)
+maragoli-model/
+
+# Claude Code internal files
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Expo / React Native
+MaragoliApp/.expo/
+MaragoliApp/dist/
+
+# Vite build output
+web/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
