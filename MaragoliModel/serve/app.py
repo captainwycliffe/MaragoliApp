@@ -167,30 +167,33 @@ def lookup_all():
     return {"phrases": _state.get("lookup", {}), "count": len(_state.get("lookup", {}))}
 
 
-# ── Gradio UI (required by HF Spaces Gradio SDK) ─────────────────────────────
-import gradio as gr
+# ── Gradio UI (only mounted on HF Spaces, optional locally) ──────────────────
+try:
+    import gradio as gr
 
-def _translate_ui(text):
-    lookup = _state.get("lookup", {})
-    if text.strip().lower() in lookup:
-        return lookup[text.strip().lower()]
-    model = _state.get("model")
-    if model is None:
-        return "Model not loaded."
-    tokenizer = _state.get("tokenizer")
-    device = _state.get("device", "cpu")
-    tokenizer.src_lang = SRC_LANG
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=MAX_LEN).to(device)
-    with torch.no_grad():
-        generated = model.generate(**inputs, forced_bos_token_id=tokenizer.lang_code_to_id[TGT_LANG], max_length=MAX_LEN, num_beams=4)
-    return tokenizer.decode(generated[0], skip_special_tokens=True).strip()
+    def _translate_ui(text):
+        lookup = _state.get("lookup", {})
+        if text.strip().lower() in lookup:
+            return lookup[text.strip().lower()]
+        model = _state.get("model")
+        if model is None:
+            return "Model not loaded."
+        tokenizer = _state.get("tokenizer")
+        device = _state.get("device", "cpu")
+        tokenizer.src_lang = SRC_LANG
+        inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=MAX_LEN).to(device)
+        with torch.no_grad():
+            generated = model.generate(**inputs, forced_bos_token_id=tokenizer.lang_code_to_id[TGT_LANG], max_length=MAX_LEN, num_beams=4)
+        return tokenizer.decode(generated[0], skip_special_tokens=True).strip()
 
-_demo = gr.Interface(
-    fn=_translate_ui,
-    inputs=gr.Textbox(label="Maragoli text"),
-    outputs=gr.Textbox(label="English translation"),
-    title="Maragoli Translate",
-    description="Fine-tuned mBART-50 model for Maragoli (Lulogooli) → English translation.",
-)
+    _demo = gr.Interface(
+        fn=_translate_ui,
+        inputs=gr.Textbox(label="Maragoli text"),
+        outputs=gr.Textbox(label="English translation"),
+        title="Maragoli Translate",
+        description="Fine-tuned mBART-50 model for Maragoli (Lulogooli) → English translation.",
+    )
 
-app = gr.mount_gradio_app(app, _demo, path="/ui")
+    app = gr.mount_gradio_app(app, _demo, path="/ui")
+except ImportError:
+    pass  # Gradio not installed — API endpoints still fully available

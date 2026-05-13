@@ -4,7 +4,7 @@ const { generate } = require('../anthropic');
 const LOCAL_MODEL_URL = process.env.LOCAL_MODEL_URL || 'http://localhost:5000';
 
 // Attempt translation via the local fine-tuned mBART model.
-// Returns null if the model is unavailable or confidence is low.
+// Returns null only if the model server is unreachable or the model is not loaded.
 async function tryLocalModel(text) {
   try {
     const res = await fetch(`${LOCAL_MODEL_URL}/translate`, {
@@ -15,11 +15,11 @@ async function tryLocalModel(text) {
     });
     if (!res.ok) return null;
     const data = await res.json();
-    // Only trust exact matches and medium+ confidence results
-    if (data.source === 'unavailable' || !data.translation) return null;
+    // Fall back to API only when model is not loaded at all
+    if (data.source === 'unavailable') return null;
     return data;
   } catch {
-    return null;   // model not running — fall through to Gemini
+    return null;   // model server not running — fall through to API
   }
 }
 
